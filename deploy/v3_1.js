@@ -53,19 +53,6 @@ module.exports = async ({ deployments, getChainId }) => {
 
   console.log({ multisigAddress, protocolProjectStartsAtOrAfter });
 
-  // Deploy a JBETHERC20ProjectPayerDeployer contract.
-  await deploy('JBETHERC20ProjectPayerDeployer', {
-    ...baseDeployArgs,
-    args: [],
-  });
-
-  // Deploy a JBETHERC20SplitsPayerDeployer contract.
-  await deploy('JBETHERC20SplitsPayerDeployer', {
-    ...baseDeployArgs,
-    contract: 'contracts/JBETHERC20SplitsPayerDeployer.sol:JBETHERC20SplitsPayerDeployer',
-    args: [],
-  });
-
   // Deploy a JBOperatorStore contract.
   const JBOperatorStore = await deploy('JBOperatorStore', {
     ...baseDeployArgs,
@@ -195,6 +182,19 @@ module.exports = async ({ deployments, getChainId }) => {
       JBSingleTokenPaymentTerminalStore.address,
       multisigAddress,
     ],
+  });
+
+  // Deploy a JBETHERC20ProjectPayerDeployer contract.
+  await deploy('JBETHERC20ProjectPayerDeployer', {
+    ...baseDeployArgs,
+    args: [JBDirectory.address],
+  });
+
+  // Deploy a JBETHERC20SplitsPayerDeployer contract.
+  await deploy('JBETHERC20SplitsPayerDeployer', {
+    ...baseDeployArgs,
+    contract: 'contracts/JBETHERC20SplitsPayerDeployer.sol:JBETHERC20SplitsPayerDeployer',
+    args: [JBSplitStore.address],
   });
 
   // Get a reference to an existing ETH/USD feed.

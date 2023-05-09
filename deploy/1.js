@@ -53,19 +53,6 @@ module.exports = async ({ deployments, getChainId }) => {
 
   console.log({ multisigAddress, protocolProjectStartsAtOrAfter });
 
-  // Deploy a JBETHERC20ProjectPayerDeployer contract.
-  await deploy('JBETHERC20ProjectPayerDeployer', {
-    ...baseDeployArgs,
-    args: [],
-  });
-
-  // Deploy a JBETHERC20SplitsPayerDeployer contract.
-  await deploy('JBETHERC20SplitsPayerDeployer', {
-    ...baseDeployArgs,
-    contract: 'contracts/JBETHERC20SplitsPayerDeployer.sol:JBETHERC20SplitsPayerDeployer',
-    args: [],
-  });
-
   // Deploy a JBOperatorStore contract.
   const JBOperatorStore = await deploy('JBOperatorStore', {
     ...baseDeployArgs,
@@ -182,6 +169,19 @@ module.exports = async ({ deployments, getChainId }) => {
     ],
   });
 
+  // Deploy a JBETHERC20ProjectPayerDeployer contract.
+  await deploy('JBETHERC20ProjectPayerDeployer', {
+    ...baseDeployArgs,
+    args: [JBDirectory.address],
+  });
+
+  // Deploy a JBETHERC20SplitsPayerDeployer contract.
+  await deploy('JBETHERC20SplitsPayerDeployer', {
+    ...baseDeployArgs,
+    contract: 'contracts/JBETHERC20SplitsPayerDeployer.sol:JBETHERC20SplitsPayerDeployer',
+    args: [JBSplitStore.address],
+  });
+
   // Get a reference to an existing ETH/USD feed.
   const usdEthFeed = await jbPricesContract.connect(deployer).feedFor(USD, ETH);
 
@@ -226,21 +226,21 @@ module.exports = async ({ deployments, getChainId }) => {
   // Deploy a JB1DayReconfigurationBufferBallot.
   await deploy('JB1DayReconfigurationBufferBallot', {
     ...baseDeployArgs,
-    contract: "contracts/JBReconfigurationBufferBallot.sol:JBReconfigurationBufferBallot",
+    contract: 'contracts/JBReconfigurationBufferBallot.sol:JBReconfigurationBufferBallot',
     args: [86400],
   });
 
   // Deploy a JB3DayReconfigurationBufferBallot.
   const JB3DayReconfigurationBufferBallot = await deploy('JB3DayReconfigurationBufferBallot', {
     ...baseDeployArgs,
-    contract: "contracts/JBReconfigurationBufferBallot.sol:JBReconfigurationBufferBallot",
+    contract: 'contracts/JBReconfigurationBufferBallot.sol:JBReconfigurationBufferBallot',
     args: [259200],
   });
 
   // Deploy a JB7DayReconfigurationBufferBallot.
   await deploy('JB7DayReconfigurationBufferBallot', {
     ...baseDeployArgs,
-    contract: "contracts/JBReconfigurationBufferBallot.sol:JBReconfigurationBufferBallot",
+    contract: 'contracts/JBReconfigurationBufferBallot.sol:JBReconfigurationBufferBallot',
     args: [604800],
   });
 
@@ -306,7 +306,6 @@ module.exports = async ({ deployments, getChainId }) => {
       splits: splits,
     };
 
-
     console.log('Deploying protocol project...');
 
     await jbControllerContract.connect(deployer).launchProjectFor(
@@ -351,11 +350,11 @@ module.exports = async ({ deployments, getChainId }) => {
 
       /*mustStartAtOrAfter*/ ethers.BigNumber.from(protocolProjectStartsAtOrAfter),
 
-      /*groupedSplits*/[groupedSplits],
+      /*groupedSplits*/ [groupedSplits],
 
-      /*fundAccessConstraints*/[],
+      /*fundAccessConstraints*/ [],
 
-      /*terminals*/[JBETHPaymentTerminal.address],
+      /*terminals*/ [JBETHPaymentTerminal.address],
 
       /*memo*/ '',
     );
