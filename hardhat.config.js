@@ -48,6 +48,12 @@ module.exports = {
         mnemonic: mnemonic(),
       },
     },
+    arbitrumGoerli: {
+      url: 'https://goerli-rollup.arbitrum.io/rpc',
+      accounts: {
+        mnemonic: mnemonic(),
+      },
+    },
   },
   namedAccounts: {
     deployer: {

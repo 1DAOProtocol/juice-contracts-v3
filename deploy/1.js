@@ -38,6 +38,12 @@ module.exports = async ({ deployments, getChainId }) => {
       chainlinkV2UsdEthPriceFeed = '0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e';
       protocolProjectStartsAtOrAfter = 0;
       break;
+    // Arbitrum Goerli
+    case '421613':
+      multisigAddress = deployer.address;
+      chainlinkV2UsdEthPriceFeed = '0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e';
+      protocolProjectStartsAtOrAfter = 0;
+      break;
     // hardhat / localhost
     case '31337':
       multisigAddress = deployer.address;
